@@ -24,18 +24,23 @@ class Program
         {
             FileInfo fileInfo = new FileInfo(path);
 
-            Console.WriteLine("\n--- Información del Archivo ---");
+            Console.WriteLine("\n--- Metadatos del Archivo ---");
             Console.WriteLine($"Nombre: {fileInfo.Name}");
+            Console.WriteLine($"Ruta absoluta: {fileInfo.FullName}");
             Console.WriteLine($"Tamaño: {fileInfo.Length} bytes");
-            Console.WriteLine($"Fecha análisis: {DateTime.Now}");
+
+            Console.WriteLine($"Fecha de creación (UTC): {fileInfo.CreationTimeUtc:yyyy-MM-dd HH:mm:ss}");
+            Console.WriteLine($"Última modificación (UTC): {fileInfo.LastWriteTimeUtc:yyyy-MM-dd HH:mm:ss}");
+            Console.WriteLine($"Último acceso (UTC): {fileInfo.LastAccessTimeUtc:yyyy-MM-dd HH:mm:ss}");
+
+            Console.WriteLine($"Fecha y hora de análisis (UTC): {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}");
             Console.WriteLine();
 
-            string sha256Hash = ComputeHash(path, SHA256.Create());
-            string md5Hash = ComputeHash(path, MD5.Create());
+            string sha256Hash = ComputeSha256(path);
 
             Console.WriteLine("--- Hashes Calculados ---");
             Console.WriteLine($"SHA256: {sha256Hash}");
-            Console.WriteLine($"MD5   : {md5Hash}");
+            
             Console.WriteLine();
 
             Console.Write("Ingrese hash SHA256 esperado (opcional): ");
@@ -68,16 +73,11 @@ class Program
         Console.ReadKey(true);
     }
 
-    static string ComputeHash(string path, HashAlgorithm algorithm)
+    static string ComputeSha256(string path)
     {
-        using (algorithm)
-        using (FileStream stream = File.OpenRead(path))
-        {
-            byte[] hash = algorithm.ComputeHash(stream);
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in hash)
-                sb.Append(b.ToString("x2"));
-            return sb.ToString();
-        }
+        using FileStream stream = File.OpenRead(path);
+        using SHA256 sha = SHA256.Create();
+        byte[] hash = sha.ComputeHash(stream);
+        return Convert.ToHexString(hash).ToLowerInvariant();
     }
 }

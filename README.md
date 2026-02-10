@@ -154,6 +154,30 @@ dotnet run
 Enter the file path when prompted.
 
 
+Technical Notes / Notas Técnicas
+🇬🇧 English
+
+All timestamps are displayed in UTC to ensure consistency and avoid timezone-related discrepancies in forensic analysis.
+
+On some Windows systems, Last Access Time may be disabled by default for performance reasons.
+In those cases, the value may not accurately reflect recent file access activity.
+
+The tool computes the hash directly from the file stream, ensuring the integrity calculation is performed on the exact file contents at the time of analysis.
+
+SHA-256 is used as the primary integrity algorithm due to its strong collision resistance and widespread forensic acceptance.
+
+🇪🇸 Español
+
+Todas las marcas de tiempo se muestran en UTC para garantizar consistencia y evitar discrepancias relacionadas con zonas horarias en análisis forense.
+
+En algunos sistemas Windows, la opción de Último Acceso (Last Access Time) puede estar deshabilitada por razones de rendimiento.
+En esos casos, el valor podría no reflejar accesos recientes reales al archivo.
+
+El hash se calcula directamente desde el flujo del archivo (file stream), asegurando que la verificación se realiza sobre el contenido exacto en el momento del análisis.
+
+Se utiliza SHA-256 como algoritmo principal de integridad debido a su alta resistencia a colisiones y su amplia aceptación en el ámbito forense.
+
+
 Author
 
 Esteban González
